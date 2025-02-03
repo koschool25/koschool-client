@@ -72,7 +72,7 @@ const router = createRouter({
 
 // 라우터 가드 설정
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('id') // localStorage에서 id 확인
+  const isLoggedIn = sessionStorage.getItem('id') // localStorage에서 id 확인
   
   // 인증이 필요한 페이지인데 로그인이 안 되어 있으면
   if (to.meta.requiresAuth && !isLoggedIn) {

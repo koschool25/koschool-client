@@ -17,9 +17,8 @@ const handleLogin = async () => {
     
     if (response.status === 200) {
         user.value = response.data
-        localStorage.setItem('id', id.value)
-        localStorage.setItem('password', password.value)
-        localStorage.setItem('category_topic', user.category_topic)
+        sessionStorage.setItem('id', id.value)
+        sessionStorage.setItem('category_topic', user.category_topic)
 
         router.push({ name: 'Home' })
     }

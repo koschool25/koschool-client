@@ -9,11 +9,6 @@ const password = ref('')
 const passwordConfirm = ref('')
 const category_topic = ref('')
 
-// watch(passwordConfirm, (newVal) => {
-// if (password.value !== newVal) {
-//     alert('비밀번호가 일치하지 않습니다.')
-// }
-// })
 
 const handleSignup = async () => {
 if (password.value !== passwordConfirm.value) {
@@ -29,10 +24,9 @@ try {
     })
     
     if (response.status === 200) {
-    // localStorage에 정보 저장
-        localStorage.setItem('id', id.value)
-        localStorage.setItem('password', password.value)
-        localStorage.setItem('category_topic', category_topic.value)
+    // sessionStorage에 정보 저장
+        sessionStorage.setItem('id', id.value)
+        sessionStorage.setItem('category_topic', category_topic.value)
         
         router.push({ name: 'Home' })
     } 

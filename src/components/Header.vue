@@ -5,19 +5,16 @@
 
   // 컴포넌트가 마운트될 때 localStorage에서 id 가져오기
   onMounted(() => {
-    userId.value = localStorage.getItem('id')
+    userId.value = sessionStorage.getItem('id')
   })
 
   const handleLogout = () => {
-    localStorage.clear()  // 모든 item 삭제
-    // 또는 특정 항목만 삭제하려면:
-    // localStorage.removeItem('id')
+    sessionStorage.clear()  // 모든 item 삭제
     
     // 페이지 새로고침
     window.location.reload()
   }
 </script>
-
 
 <template>
     <header class="header">

@@ -80,8 +80,6 @@ const goToDetailPage = (topicId) => {
 onMounted(fetchTopics);
 </script>
 
-
-
 <template>
   <!-- 데일리 뉴스룸 -->
   <div class="hot-topic-container" :style="backgroundStyle">

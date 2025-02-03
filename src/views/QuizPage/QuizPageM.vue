@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
-  const userId = computed(() => localStorage.getItem('id'))
+  const userId = computed(() => sessionStorage.getItem('id'))
 
   const selectDifficulty = async (level) => {
     try {
