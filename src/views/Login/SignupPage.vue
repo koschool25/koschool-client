@@ -17,7 +17,7 @@ if (password.value !== passwordConfirm.value) {
 }
 
 try {
-    const response = await apiClient.post('/end-point', {
+    const response = await apiClient.post('/api/member/join', {
       loginId: id.value,
       password: password.value,
       categoryTopic: category_topic.value

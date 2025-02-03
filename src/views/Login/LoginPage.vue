@@ -10,7 +10,7 @@ const user = ref({})
 
 const handleLogin = async () => {
   try {
-    const response = await apiClient.post('/end-point', {
+    const response = await apiClient.post('/api/member/login', {
       loginId: id.value,
       password: password.value
     })
