@@ -7,11 +7,13 @@ const router = useRouter()
 const questions = ref([])
 const currentQuestionIndex = ref(0)
 const currentQuestion = ref(null)
-const correctAnswers = ref(0)
+const correctAnswers = ref(0) // 맞춘 문제 수수
+const quizHistory = ref([])// 틀린 문제 고유 id 배열
 
 // 임시 데이터
 const dummyQuestions = [
   {
+    quiz_id: 1,
     level: 1,
     question: "주식시장에서 'KOSPI'는 무엇의 약자인가요?",
     answer: "Korea Composite Stock Price Index",
@@ -21,6 +23,7 @@ const dummyQuestions = [
     wrong_answer3: "Korean Securities Price Index"
   },
   {
+    quiz_id: 2,
     level: 1,
     question: "주식투자에서 '배당'이란 무엇인가요?",
     answer: "기업이 주주에게 이익을 분배하는 것",
@@ -30,6 +33,7 @@ const dummyQuestions = [
     wrong_answer3: "주가가 상승하는 것"
   },
   {
+    quiz_id: 3,
     level: 1,
     question: "PER(주가수익비율)이 의미하는 것은?",
     answer: "주가를 주당순이익으로 나눈 값",
@@ -39,6 +43,7 @@ const dummyQuestions = [
     wrong_answer3: "기업의 부채비율"
   },
   {
+    quiz_id: 4,
     level: 1,
     question: "블루칩 주식의 특징은?",
     answer: "대형 우량기업의 안정적인 주식",
@@ -48,6 +53,7 @@ const dummyQuestions = [
     wrong_answer3: "거래량이 적은 주식"
   },
   {
+    quiz_id: 5,
     level: 1,
     question: "시가총액이란?",
     answer: "발행주식 수 × 주가",
@@ -57,6 +63,7 @@ const dummyQuestions = [
     wrong_answer3: "주당 순이익"
   },
   {
+    quiz_id: 6,
     level: 1,
     question: "ROE는 무엇을 나타내는 지표인가요?",
     answer: "자기자본이익률",
@@ -66,6 +73,7 @@ const dummyQuestions = [
     wrong_answer3: "자산회전율"
   },
   {
+    quiz_id: 7,
     level: 1,
     question: "주식시장에서 '스톱로스(Stop Loss)'란?",
     answer: "손실을 제한하기 위해 미리 정한 가격에 매도하는 전략",
@@ -75,6 +83,7 @@ const dummyQuestions = [
     wrong_answer3: "배당금을 받기 위한 전략"
   },
   {
+    quiz_id: 8,
     level: 1,
     question: "ETF는 무엇의 약자인가요?",
     answer: "상장지수펀드(Exchange Traded Fund)",
@@ -84,6 +93,7 @@ const dummyQuestions = [
     wrong_answer3: "기업투자펀드"
   },
   {
+    quiz_id: 9,
     level: 1,
     question: "주식시장에서 '거래량'이 의미하는 것은?",
     answer: "하루 동안 거래된 주식의 총 수량",
@@ -92,7 +102,18 @@ const dummyQuestions = [
     wrong_answer2: "시가총액의 변화량",
     wrong_answer3: "외국인 매매 수량"
   },
+  {
+    quiz_id: 10,
+    level: 1,
+    question: "주식시장에서 '공매도'란 무엇인가요?",
+    answer: "주식을 빌려서 매도한 후 나중에 되갚는 거래",
+    explanation: "공매도는 주식을 보유하지 않은 상태에서 주식을 빌려 매도한 후, 주가가 하락하면 싼 가격에 다시 매입하여 차익을 얻는 투자 전략입니다.",
+    wrong_answer1: "주식을 장기 보유하는 전략",
+    wrong_answer2: "주식을 매수한 후 즉시 매도하는 전략",
+    wrong_answer3: "배당금을 받기 위한 전략"
+  },
 ]
+
 
 const props = defineProps({
   level: {
@@ -103,10 +124,21 @@ const props = defineProps({
 
 const fetchQuestions = async () => {
   try {
-    const response = await apiClient.post('end-point', {
+    const requestData = {
       level: parseInt(props.level)
-    })
-    questions.value = response.data
+    };
+
+    // level이 3일 경우, 세션에서 뉴스_id를 추가
+    if (parseInt(props.level) === 3) {
+      const newsId = sessionStorage.getItem('newsLetter_id');
+      if (newsId) {
+        requestData.newsLetter_id = newsId;
+      }
+    }
+
+    const response = await apiClient.post('end-point', requestData);
+    questions.value = response.data;
+
   } catch (error) {
     console.error('Error fetching questions:', error)
     // 서버에서 데이터를 가져오지 못할 경우 더미 데이터 사용
@@ -130,6 +162,7 @@ const handleAnswer = (isCorrect) => {
       params: { level: props.level }
     })
   } else {
+    quizHistory.value.push(currentQuestion.value.quiz_id)
     router.push({ 
       name: 'QuizIncorrect', 
       params: { level: props.level }
@@ -159,9 +192,12 @@ const quitQuiz = () => {
 }
 
 onMounted(() => {
-  fetchQuestions()
+  if(correctAnswers.value === 0){
+    fetchQuestions()
+  }
 })
 </script>
+
 
 <template>
     <div class="quiz-container">
@@ -176,6 +212,7 @@ onMounted(() => {
           :current-question="currentQuestion"
           :total-questions="questions.length"
           :correct-answers="correctAnswers"
+          :quiz-history="quizHistory"
           @answer-selected="handleAnswer"
           @next-question="goToNextQuestion"
         ></router-view>
@@ -190,7 +227,7 @@ onMounted(() => {
   
   <style scoped>
   .quiz-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
     min-height: 500px;

@@ -18,12 +18,13 @@ if (password.value !== passwordConfirm.value) {
 
 try {
     const response = await apiClient.post('/end-point', {
-        id: id.value,
-        password: password.value,
-        category_topic: category_topic.value
+      loginId: id.value,
+      password: password.value,
+      categoryTopic: category_topic.value
     })
+
     
-    if (response.status === 200) {
+    if (response.status === 201) {
     // sessionStorage에 정보 저장
         sessionStorage.setItem('id', id.value)
         sessionStorage.setItem('category_topic', category_topic.value)

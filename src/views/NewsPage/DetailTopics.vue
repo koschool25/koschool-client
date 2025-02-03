@@ -20,13 +20,36 @@ const fetchNewsById = async (topicId) => {
 loading.value = true;
 try {
     const response = await apiClient.post("/end-point", {
-    newsletter_id: topicId,
+    newsLetter_id: topicId,
     });
 
+    const existingData = sessionStorage.getItem('newsLetter_id');
+    if (existingData) {
+      const topicArray = JSON.parse(existingData);
+      if (!topicArray.includes(topicId)) {
+        topicArray.push(topicId);
+        sessionStorage.setItem('newsLetter_id', JSON.stringify(topicArray));
+      }
+    } else {
+      sessionStorage.setItem('newsLetter_id', JSON.stringify([topicId]));
+    }
+
     topic.value = response.data;
+
 } catch (error) {
     console.error("데이터를 불러오는 중 오류 발생:", error);
-    topic.value = {newsletter_id: 101, stock_name: '삼성전자', likes: '42', category: "에너지(예시)",date: "2025-02-01", title: "오늘의 뉴스 1", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다.", link: "https://naver.com"};
+    const existingData = sessionStorage.getItem('newsLetter_id');
+    if (existingData) {
+      const topicArray = JSON.parse(existingData);
+      if (!topicArray.includes(topicId)) {
+        topicArray.push(topicId);
+        sessionStorage.setItem('newsLetter_id', JSON.stringify(topicArray));
+      }
+    } else {
+      sessionStorage.setItem('newsLetter_id', JSON.stringify([topicId]));
+    }
+    topic.value = {newsLetter_id: 101, stock_name: '삼성전자', likes: '42', category: "에너지(예시)",date: "2025-02-01", title: "오늘의 뉴스 1", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다.", link: "https://naver.com"};
+
 } finally {
     loading.value = false;
 }

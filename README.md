@@ -1,4 +1,1 @@
-# KoSchool
-
-It is a platform for learning common sense in stocks and finance.
- 
+1. footer 배너 광고 어떻게 할 건지, 하드코딩 vs 구글 adds

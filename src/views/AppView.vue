@@ -9,8 +9,9 @@ const router = useRouter(); // 페이지 이동용 push(), replace(), back()
 // 산업군 목록
 const industries = ref(["에너지", "소재", "산업재", "자유소비재", "필수소비재", "헬스케어", "금융", "정보기술", "커뮤니케이션", "유틸리티", "부동산"]);
 
-// 선택된 산업군 (기본값: "반도체")
-const selectedIndustry = ref("에너지");
+
+// 선택된 산업군 (기본값, sessionStorage에 저장된 값)
+const selectedIndustry = ref(sessionStorage.getItem('category_topic'));
 
 // 핫토픽 데이터
 const topics = ref([]);
@@ -80,6 +81,7 @@ const goToDetailPage = (topicId) => {
 onMounted(fetchTopics);
 </script>
 
+
 <template>
   <!-- 데일리 뉴스룸 -->
   <div class="hot-topic-container" :style="backgroundStyle">
@@ -132,9 +134,27 @@ onMounted(fetchTopics);
           <hr class="divider" />
       </router-link>
     </div>
-  </div>
 
-    <router-link to="/CommunityM" class="community-title">커뮤니티</router-link>
+
+    <footer class="footer">
+      <div class="footer-item">
+        <img src="/images/footer_image1.png" alt="Footer Image" class="footer-image" />
+        <div class="footer-content">
+          <div class="footer-title">ETF CHECK</div>
+          <p class="footer-description">국내외 상장되어 있는 ETF/ETN의 모든 정보를 확인해보세요.</p>
+        </div>
+      </div>
+      <div class="footer-item">
+        <img src="/images/footer_image2.png" alt="Footer Image" class="footer-image" />
+        <div class="footer-content">
+          <div class="footer-title">BOND CHECK</div>
+          <p class="footer-description">모든 채권을 한눈에 비교, 증권사 리포트 제공</p>
+        </div>
+      </div>
+    </footer>
+  
+
+  </div>
   
 </template>
 
@@ -273,4 +293,48 @@ onMounted(fetchTopics);
   font-weight: bold;
   margin-top: 40px;
 }
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  width: 100%;
+  padding: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-image {
+  max-width: 100px;
+  height: 100px;
+}
+
+.footer-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.footer-description {
+  font-size: 1em;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
 </style>

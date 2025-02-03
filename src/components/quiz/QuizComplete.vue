@@ -13,6 +13,7 @@
       <button class="home-button" @click="goHome">
         홈으로 돌아가기
       </button>
+    
     </div>
   </template>
   
@@ -20,7 +21,7 @@
   import { useRouter } from 'vue-router'
   
   const router = useRouter()
-  const props = defineProps(['totalQuestions', 'correctAnswers'])
+  const props = defineProps(['totalQuestions', 'correctAnswers', 'quizHistory'])
   
   const goHome = () => {
     router.push('/')
@@ -68,6 +69,18 @@
     transition: all 0.3s ease;
   }
   
+  .retry-button {
+    padding: 12px 24px;
+    background-color: #e35350;
+    margin-left: 10px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
   .home-button:hover {
     background-color: #1976d2;
     transform: translateY(-2px);

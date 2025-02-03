@@ -30,24 +30,32 @@
 
     <!-- 난이도 선택 박스 -->
     <div class="difficulty-box">
-      <h2>난이도 선택</h2>
+      <h2>금융 상식 퀴즈: 난이도 선택</h2>
       
       <div class="difficulty-options">
-        <div class="difficulty-option beginner" @click="selectDifficulty(1)">
+        <div class="difficulty-option beginner" @click="selectDifficulty(0)">
             <span class="emoji">👶🍼</span>
           <span>하수</span>
         </div>
 
-        <div class="difficulty-option intermediate" @click="selectDifficulty(2)">
+        <div class="difficulty-option intermediate" @click="selectDifficulty(1)">
           <span class="emoji">👦✏️</span>
           <span>중수</span>
         </div>
 
-        <div class="difficulty-option advanced" @click="selectDifficulty(3)">
+        <div class="difficulty-option advanced" @click="selectDifficulty(2)">
           <span class="emoji">🧑‍💼🏆</span>
           <span>고수</span>
         </div>
       </div>
+    </div>
+
+    <h2 style="margin-top: 50px;">뉴스레터 퀴즈</h2>
+    <div class="difficulty-options">
+        <div class="difficulty-option newsletter" @click="selectDifficulty(3)">
+            <span class="emoji">📰📢</span>
+          <span>뉴스레터 퀴즈</span>
+        </div>
     </div>
 
     <!-- 홈으로 돌아가기 버튼 -->
@@ -141,6 +149,18 @@
   background-color: #FFCDD2;
   box-shadow: 0 0 15px rgba(244, 67, 54, 0.3);
 }
+
+/* 뉴스레터 스타일 */
+.newsletter {
+  border-color: #FF9800;
+  background-color: #fce0b7;
+}
+.newsletter:hover {
+  background-color: #FFCDD2;
+  box-shadow: 0 0 15px rgba(244, 67, 54, 0.3);
+}
+
+
 
 .emoji {
   font-size: 40px;
