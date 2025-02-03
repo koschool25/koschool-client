@@ -12,6 +12,7 @@ const industry = ref(route.query.industry);
 
 // 핫토픽 데이터
 const allTopics = ref([]);
+const preTopics = ref([]);
 const loading = ref(false);
 const today = new Date().toISOString().split("T")[0];
 const currentPage = ref(1);
@@ -21,16 +22,37 @@ const itemsPerPage = 7;
 const fetchTopics = async () => {
 loading.value = true;
 try {
-    const response = await apiClient.post("/end-point", {
-    industry: industry.value,
+    const response = await apiClient.post("/end-point", {///////////////////
+    category: industry.value,
+    date: today,
     });
 
     allTopics.value = response.data;
 } catch (error) {
     console.error("데이터를 불러오는 중 오류 발생:", error);
-    allTopics.value = [ { newsletter_id: 101, category: "에너지(예시)",date: "2025-02-02", title: "오늘의 뉴스 1", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다." },
-                        { newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }, 
-                        { newsletter_id: 203, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 204, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 206, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 207, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 208, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 209, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 210, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 211, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 212, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 213, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 261, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 222, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 245, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }];
+    allTopics.value = [ { newsletter_id: 101, category: "에너지(예시)",date: "2025-02-03", title: "오늘의 뉴스 캬캬", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다." },
+                        { newsletter_id: 202, category: "소재(예시)",date: "2025-02-03", title: "어제의 뉴스 캬캬", content: "뉴스 내용 2" }, 
+                        { newsletter_id: 203, category: "소재(예시)",date: "2025-02-03", title: "어제의 뉴스 캬캬", content: "뉴스 내용 2" },{ newsletter_id: 204, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 206, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 207, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 208, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 209, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 210, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 211, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 212, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 213, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 261, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 222, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 245, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }];
+} finally {
+    loading.value = false;
+}
+};
+
+// 이전 토픽 데이터 가져오기
+const fetchPreTopics = async () => {
+loading.value = true;
+try {
+
+    const response = await apiClient.post("/end-point", {///////////////////
+    category: industry.value,
+    });
+
+    preTopics.value = response.data;
+} catch (error) {
+    console.error("데이터를 불러오는 중 오류 발생:", error);
+    preTopics.value = [ { newsletter_id: 105, category: "에너지(예시)",date: "2025-02-03", title: "오늘의 뉴스 112213", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다." },
+                        { newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2213", content: "뉴스 내용 2" }, 
+                        { newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2123", content: "뉴스 내용 2" },{ newsletter_id: 204, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 206, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 207, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 208, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 209, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 210, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 211, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 212, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 213, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 261, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 222, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 245, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }];
 } finally {
     loading.value = false;
 }
@@ -41,12 +63,6 @@ try {
 const dailyTopics = computed(() =>
   allTopics.value.filter((item) => item.date === today)
 );
-
-// 이전 뉴스레터 필터링 (오늘보다 이전 날짜)
-const preTopics = computed(() => {
-  return allTopics.value.filter((item) => item.date < today);
-});
-//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 // 페이지네이션을 위한 데이터
 const paginatedNewsletter = computed(() => {
@@ -88,6 +104,7 @@ const goBack = () => {
 
 // 데이터 로드
 onMounted(fetchTopics);
+onMounted(fetchPreTopics);
 </script>
 
 <template>

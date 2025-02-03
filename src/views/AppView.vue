@@ -46,15 +46,13 @@ const fetchTopics = async () => {
   loading.value = true;
   try {
     
-    const response = await apiClient.post("/some_endpoint", {
-      industry: selectedIndustry.value,
-      date: today,
+    const response = await apiClient.post("/api/newsletter/list", {
+      category: selectedIndustry.value,
     });
-    allTopics.value = response.data;
-    topics.value = response.data.slice(0, 3);
+    topics.value = response.data;
   } catch (error) {
     console.error("데이터를 불러오는 중 오류 발생:", error);
-    topics.value = [{newsletter_id: 404, title: "예시 제목입니다", content: "예시 내용입니다"}];
+    topics.value = [{id: 404, title: "예시 제목입니다", content: "예시 내용입니다"}];
   } finally {
     loading.value = false;
   }
@@ -98,7 +96,7 @@ onMounted(fetchTopics);
 
     <!-- 핫토픽 목록 -->
     <ul v-if="!loading" class="topic-list">
-      <li v-for="(topic, index) in topics" :key="index" @click="goToDetailPage(topic.newsletter_id)" style="cursor: pointer;">
+      <li v-for="(topic, index) in topics" :key="index" @click="goToDetailPage(topic.id)" style="cursor: pointer;">
         {{ index + 1 }}. {{ topic.title }}
       </li>
     </ul>
