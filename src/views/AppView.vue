@@ -46,10 +46,13 @@ const fetchTopics = async () => {
   loading.value = true;
   try {
     
-    const response = await apiClient.post("/api/newsletter/list", {
-      category: selectedIndustry.value,
+    const response = await apiClient.get("/api/newsletter/list", {
+      params: {
+        category: selectedIndustry.value,
+      },
     });
-    topics.value = response.data;
+    topics.value = response.data.data;
+
   } catch (error) {
     console.error("데이터를 불러오는 중 오류 발생:", error);
     topics.value = [{id: 404, title: "예시 제목입니다", content: "예시 내용입니다"}];
@@ -97,15 +100,13 @@ onMounted(fetchTopics);
     <!-- 핫토픽 목록 -->
     <ul v-if="!loading" class="topic-list">
       <li v-for="(topic, index) in topics" :key="index" @click="goToDetailPage(topic.id)" style="cursor: pointer; font-size: 30px;">
-        {{ index + 1 }}. {{ topic.title }}
+        {{ index + 1 }}. {{ topic.title.length > 30 ? topic.title.slice(0, 27) + '...' : topic.title }}
       </li>
     </ul>
-    <p v-else class="loading-text">로딩 중...</p>
-
-    <!-- 더 보기 -->
+    <p v-else class="loading-text">로딩 중...</p>    
     <button class="refresh-button" @click="goToMorePage">더 보기...</button>
   </div>
-
+  
 
   <div class="home">  
     <div class="box-container">
@@ -135,20 +136,7 @@ onMounted(fetchTopics);
 
 
     <footer class="footer">
-      <div class="footer-item">
-        <img src="/images/footer_image1.png" alt="Footer Image" class="footer-image" />
-        <div class="footer-content">
-          <div class="footer-title">ETF CHECK</div>
-          <p class="footer-description">국내외 상장되어 있는 ETF/ETN의 모든 정보를 확인해보세요.</p>
-        </div>
-      </div>
-      <div class="footer-item">
-        <img src="/images/footer_image2.png" alt="Footer Image" class="footer-image" />
-        <div class="footer-content">
-          <div class="footer-title">BOND CHECK</div>
-          <p class="footer-description">모든 채권을 한눈에 비교, 증권사 리포트 제공</p>
-        </div>
-      </div>
+        <img src="/images/footer_image3.png" alt="Footer Image" class="footer-image" />
     </footer>
   
 
@@ -300,12 +288,14 @@ onMounted(fetchTopics);
 }
 
 .footer {
+  width: 70%;
+  box-sizing: border-box;
   display: flex;
+  margin: 0 auto;
   justify-content: center;
   gap: 50px;
-  width: 100%;
   padding: 20px;
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   text-align: center;
   font-family: 'Arial', sans-serif;
 }
@@ -324,8 +314,8 @@ onMounted(fetchTopics);
 }
 
 .footer-image {
-  max-width: 100px;
-  height: 100px;
+  max-width: 70%;
+  height: 100%;
 }
 
 .footer-title {

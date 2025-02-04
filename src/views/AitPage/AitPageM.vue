@@ -1,7 +1,6 @@
 <script setup>
-import { ref, reactive, onMounted, nextTick } from 'vue';
+import { ref, reactive, nextTick } from 'vue';
 import apiClient from "@/api.js";
-import apiClient_chat from "@/api.js";
 import { v4 as uuidv4 } from 'uuid';
 
 // 세션 ID를 sessionStorage에서 가져오거나 생성
@@ -17,24 +16,18 @@ const currentChat = reactive({
 const userInput = ref('');
 const isSending = ref(false);
 
-// 페이지 로드 시 유저별별 대화 기록 불러오기
-onMounted(async () => {
-  try {
-    const userId = sessionStorage.getItem('id'); // 사용자 ID 가져오기
-    if (!userId) {
-      console.error('사용자 ID가 없습니다.');
-      return;
-    }
-
-    // 사용자 ID에 대한 모든 질문 데이터를 불러오기
-    const response = await apiClient.get(`/end-point/${userId}`);
-    if (response.data && response.data.length > 0) {
-      chatHistory.value = response.data;
-    }
-  } catch (error) {
-    console.error('대화 기록 불러오기 실패:', error);
-  }
-});
+// 하드코딩된 AI 응답 배열
+const hardcodedResponses = [
+  'S&P 500 ETF는 미국의 주요 500대 기업에 분산 투자하는 것으로, 주식 시장의 전반적인 성과에 투자하는 방법 중 하나입니다. ETF는 \"상장지수펀드\"라고도 하며, 특정 지수의 변동을 추종하는 펀드입니다. \n\nS&P 500 ETF에 투자하면 다음과 같은 장점이 있습니다:\n1. **분산 투자**: 다양한 기업에 분산 투자하므로 개별 기업의 위험이 줄어듭니다.\n2. **시장 성과 추종**: 경제 전반의 성장에 따라 성과를 기대할 수 있습니다.\n3. **유동성**: 주식처럼 거래되어 언제든 사고팔 수 있습니다.\n\n하지만 시장 전반의 하락 시에도 영향을 받을 수 있으므로, 자신의 투자 목표와 위험 수용 능력을 고려하는 것이 중요합니다. 투자에 대한 생각이 있으신가요? \n\n더 많은 ETF 정보는 ETF CHECK(https://www.etfcheck.co.kr/)를 확인하세요.',
+  '유상증자란 회사가 추가로 주식을 발행하여 자본금을 늘리는 것을 말합니다. 이는 회사가 외부로부터 새로운 자금을 조달하기 위함인데, 주로 사업 확장이나 부채 상환 등에 사용합니다. 새로운 주식을 발행하면 기존 주주들의 지분이 희석될 수 있지만, 회사가 자금을 잘 활용하면 장기적으로는 기업의 가치를 증가시키기도 합니다.\n\n혹시 \"주주\"라는 용어를 아시나요?',
+  'AI TUTOR 사용 한도를 초과하였습니다.',
+  'AI TUTOR 사용 한도를 초과하였습니다.',
+  'AI TUTOR 사용 한도를 초과하였습니다.',
+  'AI TUTOR 사용 한도를 초과하였습니다.',
+  'AI TUTOR 사용 한도를 초과하였습니다.',
+  'AI TUTOR 사용 한도를 초과하였습니다.'
+];
+let responseIndex = 0;
 
 const sendMessage = async () => {
   if (!userInput.value.trim() || isSending.value) return;
@@ -47,23 +40,18 @@ const sendMessage = async () => {
     sessionId: sessionId
   });
 
-  try {
-    const response = await apiClient_chat.post('/end-point', {/////////////////////// end-point 수정
-      message: userInput.value
+  // 하드코딩된 AI 응답과 로딩 시간 추가
+  setTimeout(() => {
+    const responseContent = hardcodedResponses[responseIndex] || '기본 AI 응답입니다.';
+    currentChat.messages.push({
+      id: Date.now(),
+      role: 'assistant',
+      content: responseContent
     });
 
-    currentChat.messages.push({
-      id: Date.now(),
-      role: 'assistant',
-      content: response.data.message  ///////////////////////////////////// key에 따라 수정정
-    });
-  } catch (error) {
-    currentChat.messages.push({
-      id: Date.now(),
-      role: 'assistant',
-      content: '메시지 전송 실패'
-    });
-  } finally {
+    // 다음 응답으로 인덱스 증가
+    responseIndex = (responseIndex + 1) % hardcodedResponses.length;
+
     if (currentChat.messages.length >= 2) {
       chatHistory.value.unshift({
         id: Date.now(),
@@ -74,15 +62,15 @@ const sendMessage = async () => {
 
     userInput.value = '';
     isSending.value = false;
-    await nextTick();
-    scrollToBottom();
-  }
+    nextTick().then(scrollToBottom);
+  }, 3000); // 3초의 로딩 시간
+  isSending.value = false;
 };
 
 const loadChat = async (chat) => {
   if (currentChat.sessionId !== chat.sessionId) {
     try {
-      const response = await apiClient.get(`/api/chats/${chat.sessionId}`);
+      const response = await apiClient.get(`/end-point/${chat.sessionId}`); // 업데이트 예정
       currentChat.sessionId = chat.sessionId;
       currentChat.messages = response.data.messages;
       await nextTick();
@@ -119,19 +107,7 @@ const scrollToMessage = (index) => {
 </script>
 
 <template>
-  <div class="chat-container">
-    <!-- 사이드바 -->
-    <div class="chat-sidebar">
-      <h3>대화 기록</h3>
-      <div v-for="(chat, index) in chatHistory" 
-           :key="index">
-        <div @click="loadChat(chat)" class="chat-history-item">
-          {{ chat.title || chat.messages[0].content.substring(0, 30) + '...' }}
-        </div>
-        <hr v-if="index < chatHistory.length - 1 && chatHistory[index].sessionId !== chatHistory[index + 1].sessionId" />
-      </div>
-    </div>
-    
+  <div class="chat-container">   
 
     <!-- 메인 채팅 영역 -->
     <div class="chat-main">
@@ -161,7 +137,10 @@ const scrollToMessage = (index) => {
 <style scoped>
   .chat-container {
   display: flex;
-  height: 100vh;
+  height: 80vh;
+  width: 80%;
+  justify-content: center;
+  margin-left: 10%;
   }
 
   .chat-sidebar {
@@ -190,6 +169,7 @@ const scrollToMessage = (index) => {
   .chat-messages {
   flex: 1;
   overflow-y: auto;
+  font-weight: bold;
   padding: 1rem;
   }
 

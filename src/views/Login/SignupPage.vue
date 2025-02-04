@@ -18,19 +18,18 @@ if (password.value !== passwordConfirm.value) {
 
 try {
     const response = await apiClient.post('/api/member/join', {
-      loginId: id.value,
-      password: password.value,
-      categoryTopic: category_topic.value
-    })
-
+        loginId: id.value,
+        password: password.value,
+        categoryTopic: category_topic.value
+    });
     
-    if (response.code === 201) {
+
     // sessionStorage에 정보 저장
-        sessionStorage.setItem('id', id.value)
-        sessionStorage.setItem('category_topic', category_topic.value)
-        
-        router.push({ name: 'Home' })
-    } 
+    sessionStorage.setItem('id', id.value)
+    sessionStorage.setItem('category_topic', category_topic.value)
+    
+    router.push({ name: 'Home' })
+    
 }catch (error) {
     if (error.response) {
       alert('회원가입 실패: ' + (error.response.data?.message || '알 수 없는 오류가 발생했습니다.'))

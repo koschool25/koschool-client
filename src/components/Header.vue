@@ -3,7 +3,7 @@
 
   const userId = ref('')
 
-  // 컴포넌트가 마운트될 때 localStorage에서 id 가져오기
+  // 컴포넌트가 마운트될 때 sessionStorage에서 id 가져오기
   onMounted(() => {
     userId.value = sessionStorage.getItem('id')
   })
@@ -32,10 +32,11 @@
         <router-link to="/CommunityM" class="nav-item">COMMUNITY</router-link>
       </nav>
   
+
       <!-- 사용자 정보 및 로그아웃 버튼 -->
       <div class="user-info">
-        <button class="logout-btn" @click="handleLogout">로그아웃</button>
-        <span class="user-name">{{ userId }}님</span>
+        <span class="user-name" style="padding-left: 10px;">{{ userId }}님</span>
+        <button style="cursor: pointer;" @click="handleLogout">로그아웃</button>
       </div>
     </header>
   </template>
@@ -43,7 +44,7 @@
   <style scoped>
   /* 헤더 스타일 */
   .header {
-    width: 70%;
+    width: 68%;
     box-sizing: border-box;
     display: flex;
     margin: 0 auto;
@@ -70,6 +71,7 @@
   .site-name {
     font-size: 20px;
     font-weight: bold;
+    padding-right: 20px;
   }
   
   /* 네비게이션 메뉴 */

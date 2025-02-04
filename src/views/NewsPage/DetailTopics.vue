@@ -18,42 +18,44 @@ const props = defineProps({
 })
 
 const fetchNewsById = async (topicId) => {
-loading.value = true;
-try {
-    const response = await apiClient.post("/end-point", { ///////////
-    newsletter_id: topicId,
+  loading.value = true;
+  try {
+    const response = await apiClient.get("/api/newsletter/detail", { 
+      params: {
+        newsletterId: topicId,
+      },
     });
 
-    const existingData = sessionStorage.getItem('newsLetter_id');
+    let existingData = sessionStorage.getItem('newsLetter_id');
     if (existingData) {
-      const topicArray = JSON.parse(existingData);
+      const topicArray = existingData.split(','); // 쉼표로 구분된 문자열을 배열로 변환
       if (!topicArray.includes(topicId)) {
         topicArray.push(topicId);
-        sessionStorage.setItem('newsLetter_id', JSON.stringify(topicArray));
+        sessionStorage.setItem('newsLetter_id', topicArray.join(',')); // 배열을 쉼표로 구분된 문자열로 저장
       }
     } else {
-      sessionStorage.setItem('newsLetter_id', JSON.stringify([topicId]));
+      sessionStorage.setItem('newsLetter_id', topicId); // 첫 번째 항목은 그대로 저장
     }
 
-    topic.value = response.data;
+    topic.value = response.data.data;
 
-} catch (error) {
+  } catch (error) {
     console.error("데이터를 불러오는 중 오류 발생:", error);
-    const existingData = sessionStorage.getItem('newsLetter_id');
+    let existingData = sessionStorage.getItem('newsLetter_id');
     if (existingData) {
-      const topicArray = JSON.parse(existingData);
+      const topicArray = existingData.split(',');
       if (!topicArray.includes(topicId)) {
         topicArray.push(topicId);
-        sessionStorage.setItem('newsLetter_id', JSON.stringify(topicArray));
+        sessionStorage.setItem('newsLetter_id', topicArray.join(','));
       }
     } else {
-      sessionStorage.setItem('newsLetter_id', JSON.stringify([topicId]));
+      sessionStorage.setItem('newsLetter_id', topicId);
     }
-    topic.value = {newsletter_id: 101, stock_name: '삼성전자', likes: '42', category: "에너지(예시)",date: "2025-02-01", title: "오늘의 뉴스 1", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다.", link: "https://naver.com"};
+    topic.value = {title: '제목 예시', category: '소재', stock: '삼성전자', summary: '요약 예시', likes: '42', link: "https://naver.com"};
 
-} finally {
+  } finally {
     loading.value = false;
-}
+  }
 };
 
 // "뒤로 가기" 버튼 클릭 시 이전 페이지로 이동
@@ -82,14 +84,15 @@ onMounted(() => {
 
       <!-- AI 요약 -->
       <div class="content-box">
-        <p>{{ topic.content }}</p>
-        <p v-if ="loading">로딩 중...</p>
+        <pre style="font-size: 18px;">{{ topic.summary }}</pre>
+        <pre v-if ="loading" style="font-size: 18px;">로딩 중...</pre>
       </div>
+
 
       <!-- 좋아요 -->
       <div class="like-section">
         <span>❤️ {{ topic.likes }}</span>
-        <span style="padding-left: 30px; font-weight: bold">관련 종목: {{ topic.stock_name }}</span>
+        <span style="padding-left: 30px; font-weight: bold">관련 종목: {{ topic.stock }}</span>
       </div>
       <div style="text-align: right; margin-top: 50px;">
         <a class="link-button" :href="topic.link" target="_blank" rel="noopener noreferrer">원문 보기</a>

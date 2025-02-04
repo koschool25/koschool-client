@@ -36,6 +36,7 @@
       props.currentQuestion.wrongAnswer2,
       props.currentQuestion.wrongAnswer3
     ])
+
   })
   
   const selectAnswer = (selectedAnswer) => {

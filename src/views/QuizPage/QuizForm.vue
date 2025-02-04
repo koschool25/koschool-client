@@ -4,12 +4,12 @@ import { useRouter } from 'vue-router'
 import apiClient from '@/api.js'
 
 const router = useRouter()
-const questions = ref([])
-const currentQuestionIndex = ref(0)
-const currentQuestion = ref(null)
-const correctAnswers = ref(0) // 맞춘 문제 수수
-const quizHistory = ref([])// 틀린 문제 고유 id 배열
-
+let questions = ''
+let currentQuestionIndex = 0
+let currentQuestion = null
+let correctAnswers = 0 // 맞춘 문제 수수
+const quizHistory = [] // 틀린 문제 고유 id 배열
+  
 // 임시 데이터
 const dummyQuestions = [
   {
@@ -126,30 +126,42 @@ const props = defineProps({
 const fetchQuestions = async () => {
   try {
     const requestData = {
-      level: parseInt(props.level)
+      level: props.level
     };
 
+    let response ='';
     // level이 3일 경우, 세션에서 뉴스_id를 추가
     if (parseInt(props.level) === 3) {
       const newsId = sessionStorage.getItem('newsLetter_id');
-      const response = await apiClient.post('/api/quiz/newsletter', {
-      newsletter: newsId,
+      response = await apiClient.get('/api/quiz/newsletter', {
+      params: {
+        newsletter: newsId,
+      }
+      
     });
+      questions = response.data.data;
+      console.log(response.data.data)
+      console.log(questions)
     }
     else{
-      const response = await apiClient.post('/api/quiz/level', {
-      level: parseInt(props.level),
+      response = await apiClient.get('/api/quiz/level', {
+      params: {
+        level: parseInt(props.level),
+      }
     });
-    }
-    questions.value = response.data;
+      questions = response.data.data;
 
+      console.log(response.data.data)
+      console.log(questions)
+    }
+    
   } catch (error) {
     console.error('Error fetching questions:', error)
     // 서버에서 데이터를 가져오지 못할 경우 더미 데이터 사용
-    questions.value = dummyQuestions
+    questions = dummyQuestions
   }finally {
     // 데이터 설정 후 첫 문제 설정 및 라우팅
-    currentQuestion.value = questions.value[0]
+    currentQuestion = questions[0]
     router.push({ 
       name: 'QuizQuestion',
       params: { level: props.level }
@@ -160,13 +172,13 @@ const fetchQuestions = async () => {
 // 답변 처리
 const handleAnswer = (isCorrect) => {
   if (isCorrect) {
-    correctAnswers.value++
+    correctAnswers++
     router.push({ 
       name: 'QuizCorrect',  
       params: { level: props.level }
     })
   } else {
-    quizHistory.value.push(currentQuestion.value.id)
+    quizHistory.push(currentQuestion.id)
     router.push({ 
       name: 'QuizIncorrect', 
       params: { level: props.level }
@@ -174,9 +186,9 @@ const handleAnswer = (isCorrect) => {
   }
 }
 const goToNextQuestion = () => {
-  if (currentQuestionIndex.value < questions.value.length - 1) {
-    currentQuestionIndex.value++
-    currentQuestion.value = questions.value[currentQuestionIndex.value]
+  if (currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++
+    currentQuestion = questions[currentQuestionIndex]
     router.push({ 
       name: 'QuizQuestion',
       params: { level: props.level }
@@ -196,7 +208,7 @@ const quitQuiz = () => {
 }
 
 onMounted(() => {
-  if(correctAnswers.value === 0){
+  if(correctAnswers === 0){
     fetchQuestions()
   }
 })

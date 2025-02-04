@@ -22,17 +22,21 @@ const itemsPerPage = 7;
 const fetchTopics = async () => {
 loading.value = true;
 try {
-    const response = await apiClient.post("/end-point", {///////////////////
-    category: industry.value,
-    date: today,
+    const response = await apiClient.get("/api/newsletter/list/likes", {
+    params: {
+        category: industry.value,
+        date: today,
+    },
     });
 
-    allTopics.value = response.data;
+
+    allTopics.value = response.data.data;
 } catch (error) {
     console.error("데이터를 불러오는 중 오류 발생:", error);
-    allTopics.value = [ { newsletter_id: 101, category: "에너지(예시)",date: "2025-02-03", title: "오늘의 뉴스 캬캬", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다." },
-                        { newsletter_id: 202, category: "소재(예시)",date: "2025-02-03", title: "어제의 뉴스 캬캬", content: "뉴스 내용 2" }, 
-                        { newsletter_id: 203, category: "소재(예시)",date: "2025-02-03", title: "어제의 뉴스 캬캬", content: "뉴스 내용 2" },{ newsletter_id: 204, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 206, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 207, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 208, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 209, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 210, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 211, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 212, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 213, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 261, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 222, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 245, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }];
+
+    allTopics.value = [ { id: 101, title: "‘8년 사법리스크’ 털어낸 이재용, 반도체 살려내고 삼성 DNA 회복할까"},
+                        { id: 202, title: "삼성전자, 다시 6만전자 향해서?…장중 4% 이상 상승"},
+                        { id: 203, title: "삼성전자, ISE 2025서 컬러 이페이퍼 4종 공개"}];
 } finally {
     loading.value = false;
 }
@@ -43,26 +47,26 @@ const fetchPreTopics = async () => {
 loading.value = true;
 try {
 
-    const response = await apiClient.post("/end-point", {///////////////////
-    category: industry.value,
+    const response = await apiClient.get("/api/newsletter/list/previous", {
+    params: {
+        category: industry.value,
+    },
     });
 
-    preTopics.value = response.data;
+
+    preTopics.value = response.data.data;
 } catch (error) {
+
     console.error("데이터를 불러오는 중 오류 발생:", error);
-    preTopics.value = [ { newsletter_id: 105, category: "에너지(예시)",date: "2025-02-03", title: "오늘의 뉴스 112213", content: "변호인단은 문 권한대행에 대해 “에스엔에스(SNS)에서 교류관계에 있는 정치인들은 이재명 대표를 포함해 대부분 민주당 인사들”이라면서 “심지어 그는 수많은 음모론과 가짜뉴스를 양산한 유튜버까지 팔로우한 것으로 드러났다”고 주장했다. 변호인단이 지목한 유튜버는 ‘김어준 저장소’다." },
-                        { newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2213", content: "뉴스 내용 2" }, 
-                        { newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2123", content: "뉴스 내용 2" },{ newsletter_id: 204, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 206, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 207, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 208, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 209, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 210, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 211, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 212, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 213, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 261, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 222, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 245, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }];
+    preTopics.value = [ { id: 105, category: "에너지(예시)",date: "2025-02-03", title: "오늘의 뉴스 112213"},
+                        { id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2213"}, 
+                        { id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2123"},{ newsletter_id: 204, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 205, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 206, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 207, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 208, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 209, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 210, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 211, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 212, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 213, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 261, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 222, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 202, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" },{ newsletter_id: 245, category: "소재(예시)",date: "2025-01-31", title: "어제의 뉴스 2", content: "뉴스 내용 2" }];
 } finally {
     loading.value = false;
 }
 };
 
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ데이터 구조 파악
-// 오늘 뉴스레터 필터링
-const dailyTopics = computed(() =>
-  allTopics.value.filter((item) => item.date === today)
-);
 
 // 페이지네이션을 위한 데이터
 const paginatedNewsletter = computed(() => {
@@ -118,10 +122,10 @@ onMounted(fetchPreTopics);
 
         <!-- 데일리 랭킹 -->
         <div class="ranking">
-            <h3>데일리 랭킹 "{{ today }}"</h3>
-            <ul v-if="dailyTopics.length">
-                <li v-for="(topic, index) in dailyTopics" :key="topic.newsletter_id" @click ='goToDetailPage(topic.newsletter_id)'>
-                {{ index + 1 }}. {{ topic.title }}
+            <h3>월간 랭킹 (기준일: {{ today }})</h3>
+            <ul v-if="allTopics.length">
+                <li v-for="(topic, index) in allTopics" :key="topic.id" @click ='goToDetailPage(topic.id)'>
+                {{ index + 1 }}. {{ topic.title.length > 30 ? topic.title.slice(0, 30) + '...' : topic.title }}
                 </li>
             </ul>
             <p v-else>오늘의 데이터가 없습니다.</p>
@@ -131,10 +135,10 @@ onMounted(fetchPreTopics);
 
         <!-- 이전 뉴스레터 -->
         <div class="newsletter">
-            <h3>이전 뉴스레터</h3>
+            <h3>전체 뉴스레터</h3>
             <ul>
-                <li v-for="(topic, index) in paginatedNewsletter" :key="index" @click ='goToDetailPage(topic.newsletter_id)'>
-                {{ topic.date }} - {{ topic.title }}
+                <li v-for="(topic, index) in paginatedNewsletter" :key="index" @click ='goToDetailPage(topic.id)'>
+                  {{ topic.title }}
                 </li>
             </ul>
 

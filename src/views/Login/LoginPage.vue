@@ -11,12 +11,12 @@ const user = ref({})
 const handleLogin = async () => {
   try {
     const response = await apiClient.post('/api/member/login', {
-      loginId: id.value,
-      password: password.value
+        loginId: id.value,
+        password: password.value
     })
-    
+
     if (response.code === 200) {
-        user.value = response.data
+        user.value = response.data.data
         sessionStorage.setItem('id', id.value)
         sessionStorage.setItem('category_topic', user.category_topic)
 
