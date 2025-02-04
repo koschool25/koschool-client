@@ -91,12 +91,12 @@ onMounted(fetchTopics);
           {{ industry }}
         </option>
       </select>
-      오늘<span style="color: orange">"{{today}}"</span>의 핫토픽!
+      <div>오늘 <span style="color: orange">"{{today}}"</span>의 핫토픽!</div>
     </h2>
 
     <!-- 핫토픽 목록 -->
     <ul v-if="!loading" class="topic-list">
-      <li v-for="(topic, index) in topics" :key="index" @click="goToDetailPage(topic.id)" style="cursor: pointer;">
+      <li v-for="(topic, index) in topics" :key="index" @click="goToDetailPage(topic.id)" style="cursor: pointer; font-size: 30px;">
         {{ index + 1 }}. {{ topic.title }}
       </li>
     </ul>
@@ -161,6 +161,8 @@ onMounted(fetchTopics);
 
 .hot-topic-container {
   width: 70%;
+  position: relative;
+  box-sizing: border-box; /* 패딩과 보더를 포함한 너비 계산 */
   margin: 20px auto;
   padding: 20px;
   border-radius: 10px;
@@ -208,7 +210,9 @@ onMounted(fetchTopics);
 }
 
 .refresh-button {
-  margin-top: 15px;
+  position: absolute; /* 위치를 절대값으로 설정 */
+  right: 20px; /* 오른쪽에서 20px 떨어진 위치 */
+  bottom: 20px; /* 아래에서 20px 떨어진 위치 */
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: bold;
@@ -216,6 +220,7 @@ onMounted(fetchTopics);
   color: #333;
   border: none;
   border-radius: 10px;
+  width: auto; /* 너비를 자동으로 설정 */
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -253,6 +258,8 @@ onMounted(fetchTopics);
 .home {
   text-align: center;
   margin-top: 50px;
+  width: 100%; 
+  box-sizing: border-box; /* 패딩과 보더를 포함한 너비 계산 */
 }
 
 .box-container {

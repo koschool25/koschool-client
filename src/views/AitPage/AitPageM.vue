@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive, onMounted, nextTick } from 'vue';
 import apiClient from "@/api.js";
+import apiClient_chat from "@/api.js";
 import { v4 as uuidv4 } from 'uuid';
 
 // 세션 ID를 sessionStorage에서 가져오거나 생성
@@ -47,9 +48,7 @@ const sendMessage = async () => {
   });
 
   try {
-    const response = await apiClient.post('/end-point', {
-      userId: sessionStorage.getItem('id'), // 유저 ID
-      sessionId: sessionId,
+    const response = await apiClient_chat.post('/end-point', {/////////////////////// end-point 수정
       message: userInput.value
     });
 

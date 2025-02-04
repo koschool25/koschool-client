@@ -43,12 +43,16 @@
   <style scoped>
   /* 헤더 스타일 */
   .header {
+    width: 70%;
+    box-sizing: border-box;
     display: flex;
+    margin: 0 auto;
     align-items: center;
     justify-content: space-between;
     padding: 10px 5%;
     background-color: white;
     color: black;
+
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   }
   

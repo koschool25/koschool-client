@@ -24,7 +24,7 @@ try {
     })
 
     
-    if (response.status === 201) {
+    if (response.code === 201) {
     // sessionStorage에 정보 저장
         sessionStorage.setItem('id', id.value)
         sessionStorage.setItem('category_topic', category_topic.value)

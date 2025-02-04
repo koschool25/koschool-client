@@ -32,9 +32,9 @@
     if (!props.currentQuestion) return []
     return shuffleArray([
       props.currentQuestion.answer,
-      props.currentQuestion.wrong_answer1,
-      props.currentQuestion.wrong_answer2,
-      props.currentQuestion.wrong_answer3
+      props.currentQuestion.wrongAnswer1,
+      props.currentQuestion.wrongAnswer2,
+      props.currentQuestion.wrongAnswer3
     ])
   })
   

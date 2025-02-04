@@ -7,4 +7,11 @@ const apiClient = axios.create({
     }
 });
 
+const apiClient_chat = axios.create({
+    baseURL: import.meta.env.VITE_API_CHAT_POINT,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+
 export default apiClient;
